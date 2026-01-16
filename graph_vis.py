@@ -72,14 +72,11 @@ def build_graph(n, edges):
     return G
 
 
-def draw_graph(G, out=None, layout='spring'):
+def draw_graph(G, out=None):
     import matplotlib.pyplot as plt
     import networkx as nx
 
-    if layout == 'circular':
-        pos = nx.circular_layout(G)
-    else:
-        pos = nx.spring_layout(G)
+    pos = nx.spring_layout(G)
     plt.figure(figsize=(6, 6))
     nx.draw(G, pos, with_labels=True, node_color='skyblue', edge_color='gray', node_size=600)
     if out:
@@ -105,7 +102,6 @@ def main():
     p.add_argument('--n', type=int, required=True, help='Number of nodes (n)')
     p.add_argument('--edges', type=str, required=True, help="Edges as a JSON-style 2D list, e.g. '[[0,1],[1,2]]' (use '-' to read from stdin)")
     p.add_argument('--out', type=str, default=None, help='If provided, save visualization to this file (png, svg, etc.)')
-    p.add_argument('--layout', choices=['spring', 'circular'], default='spring', help='Layout algorithm')
     args = p.parse_args()
 
     edges_text = args.edges
@@ -125,7 +121,7 @@ def main():
     if invalid:
         print("Warning: some edges reference nodes outside 0..n-1 and will be ignored:", invalid, file=sys.stderr)
 
-    draw_graph(G, out=args.out, layout=args.layout)
+    draw_graph(G, out=args.out)
 
 
 if __name__ == '__main__':
