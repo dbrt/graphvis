@@ -37,3 +37,4 @@ If `matplotlib` or `networkx` are not available, the script prints an adjacency 
 Notes
 - Nodes are always created 0..n-1. Edges referencing out-of-range nodes are ignored with a warning.
 - You can save the visualization to a file with `--out`.
+ - If your edge list uses 1-based node indices (1..n) instead of 0-based (0..n-1), pass the `--offbyone` flag and the tool will shift indices automatically.

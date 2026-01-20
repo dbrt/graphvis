@@ -102,12 +102,17 @@ def main():
     p.add_argument('--n', type=int, required=True, help='Number of nodes (n)')
     p.add_argument('--edges', type=str, required=True, help="Edges as a JSON-style 2D list, e.g. '[[0,1],[1,2]]' (use '-' to read from stdin)")
     p.add_argument('--out', type=str, default=None, help='If provided, save visualization to this file (png, svg, etc.)')
+    p.add_argument('--offbyone', action='store_true', help='Treat provided edge node ids as 1..n instead of 0..n-1')
     args = p.parse_args()
 
     edges_text = args.edges
     if edges_text == '-':
         edges_text = sys.stdin.read()
     edges = parse_edges(edges_text)
+
+    # If the user provided 1-based node indices (1..n), shift them to 0-based
+    if args.offbyone:
+        edges = [(int(u) - 1, int(v) - 1) for u, v in edges]
 
     G = build_graph(args.n, edges)
     if G is None:
